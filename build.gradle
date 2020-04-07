@@ -1,0 +1,110 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.8.4'
+}
+
+group 'asia.kala'
+version '0.4.0-SHAPSHOT'
+
+sourceCompatibility = 9
+targetCompatibility = 9
+
+task processClassFile(dependsOn: compileJava) {
+    doLast {
+        FileTree tree = fileTree('build/classes/java/main')
+        tree.include '**/*.class'
+        tree.exclude 'module-info.class'
+        tree.each {
+            RandomAccessFile rf = new RandomAccessFile(it, "rw")
+            rf.seek(7)   // major version
+            rf.write(49) // java 5
+            rf.close()
+        }
+    }
+}
+
+jar.dependsOn(processClassFile)
+
+javadoc {
+    source = sourceSets.main.allSource
+
+    options {
+        encoding = 'UTF-8'
+        locale = 'en_US'
+        tags = ['apiNote:a:API Note:', 'implSpec:a:Implementation Requirements:', 'implNote:a:Implementation Note:']
+    }
+
+    options.addStringOption('link', 'https://docs.oracle.com/en/java/javase/11/docs/api/')
+    options.addBooleanOption('html5', true)
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    exclude 'module-info.class'
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
+}
+
+
+publishing {
+    publications {
+        Kala(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = project.name
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'glavo'
+                        name = 'Glavo'
+                        email = 'zjx001202@gmail.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['Kala']
+    pkg {
+        repo = 'maven'
+        name = project.name
+        licenses = ['Apache-2.0']
+        publicDownloadNumbers = true
+        vcsUrl = 'https://github.com/kala-projects/kala-platform.git'
+        version {
+            name = project.version
+            desc = "${project.name} ${project.version}"
+            vcsTag = project.version
+        }
+    }
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+task travisPublish() {}
+
+if (!project.version.toString().endsWith("SHAPSHOT")) {
+    travisPublish.dependsOn(bintrayUpload)
+}
+
