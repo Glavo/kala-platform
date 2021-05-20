@@ -106,7 +106,7 @@ public enum Arch {
         String arch = System.getProperty("os.arch").toLowerCase().trim();
         if ("x86".equals(arch) || "i386".equals(arch) || "i486".equals(arch) || "i586".equals(arch) || "i686".equals(arch)) {
             return X86;
-        } else if ("x64".equals(arch) || "x86-64".equals(arch) || "amd64".equals(arch)) {
+        } else if ("x64".equals(arch) || "x86-64".equals(arch) || "x86_64".equals(arch) || "amd64".equals(arch)) {
             return X86_64;
         } else if ("ppc".equals(arch) || "powerpc".equals(arch)) {
             return PPC;
