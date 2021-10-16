@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.glavo"
-version = kalaVersion("0.4.0")
+version = kalaVersion("0.5.0")
 
 repositories {
     mavenCentral()
