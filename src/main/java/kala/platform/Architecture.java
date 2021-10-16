@@ -100,7 +100,7 @@ public enum Architecture {
     RISCV(true, "RISC-V"),
     ;
 
-    private final String normalizedName = name().toLowerCase();
+    private final String normalizedName = toString().toLowerCase(Locale.ROOT);
     private final String displayName;
     private final boolean is64bit;
 
@@ -187,7 +187,7 @@ public enum Architecture {
                 return S390X;
             case "sparc":
                 return SPARC;
-            case "sparv9c":
+            case "sparcv9":
                 return SPARCV9;
             case "mips":
             case "mips32":

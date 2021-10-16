@@ -12,113 +12,72 @@ public enum OperatingSystem {
     UNKNOWN,
 
     /**
-     * UNIX or Unix-like OS
-     */
-    UNIX,
-
-    /**
      * IBM AIX
      */
-    AIX(UNIX),
+    AIX,
 
     /**
      * Oracle Solaris
      */
-    SOLARIS(UNIX),
+    SOLARIS,
 
     /**
      * GNU/Linux OS
      */
-    LINUX(UNIX),
+    LINUX,
 
     /**
      * Android
      */
-    ANDROID(LINUX),
-
-    /**
-     * BSD-based OS
-     */
-    BSD(UNIX),
+    ANDROID,
 
     /**
      * FreeBSD
      */
-    FREEBSD(BSD),
+    FREEBSD,
 
     /**
      * OpenBSD
      */
-    OPENBSD(BSD),
+    OPENBSD,
 
     /**
      * GNU/kFreeBSD
      */
-    KFREEBSD(BSD),
+    KFREEBSD,
     /**
      * NetBSD
      */
-    NETBSD(BSD),
+    NETBSD,
 
     /**
      * DragonFly BSD
      */
-    DRAGONFLY(BSD),
+    DRAGONFLY,
 
     /**
      * Darwin OS
      */
-    DARWIN(BSD),
+    DARWIN,
     /**
      * Mac OS
      */
-    MACOS(DARWIN),
+    MACOS,
 
     /**
      * IOS
      */
-    IOS(DARWIN),
+    IOS,
 
     /**
      * Windows
      */
-    WINDOWS
-    ;
+    WINDOWS;
 
-    //public static final OperatingSystem CURRENT_OS = detectOS();
-
-    private final String normalizedName = this.name().toLowerCase();
-    final OperatingSystem base;
-
-    OperatingSystem() {
-        this(null);
-    }
-
-    OperatingSystem(OperatingSystem base) {
-        this.base = base;
-    }
+    private final String normalizedName = this.toString().toLowerCase();
 
     public String getNormalizedName() {
         return normalizedName;
-    }
-
-    public OperatingSystem getBaseOS() {
-        return base;
-    }
-
-    public boolean is(OperatingSystem os) {
-        if (os == null) {
-            return false;
-        }
-
-        OperatingSystem o = this;
-        while (o != null) {
-            if (o == os) {
-                return true;
-            }
-            o = o.base;
-        }
-        return false;
     }
 
     public boolean isDarwin() {
@@ -126,11 +85,20 @@ public enum OperatingSystem {
     }
 
     public boolean isBSD() {
-        return is(BSD);
+        return this == FREEBSD
+                || this == OPENBSD
+                || this == KFREEBSD
+                || this == NETBSD
+                || this == DRAGONFLY
+                || isDarwin();
     }
 
     public boolean isUnixLike() {
-        return is(UNIX);
+        return this == LINUX
+                || this == ANDROID
+                || this == AIX
+                || this == SOLARIS
+                || isBSD();
     }
 
     @Override

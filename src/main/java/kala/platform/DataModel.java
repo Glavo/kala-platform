@@ -34,16 +34,4 @@ public enum DataModel {
     public int getLongLongSize() {
         return longLongSize;
     }
-
-    /*
-    private static DataModel detectDM() {
-        if (Platform.is64Bit()) {
-            if (Platform.isWindows()) {
-                return LLP64;
-            }
-            return LP64;
-        }
-        return ILP32;
-    }
-     */
 }

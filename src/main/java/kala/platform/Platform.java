@@ -177,6 +177,22 @@ public final class Platform {
         return architecture.is64Bit();
     }
 
+    public int getShortSize() {
+        return getDataModel().getShortSize();
+    }
+
+    public int getIntSize() {
+        return getDataModel().getIntSize();
+    }
+
+    public int getLongSize() {
+        return getDataModel().getLongSize();
+    }
+
+    public int getLongLongSize() {
+        return getDataModel().getLongLongSize();
+    }
+
     @Override
     public int hashCode() {
         return architecture.hashCode() ^ operatingSystem.hashCode();
