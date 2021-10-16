@@ -1,6 +1,4 @@
-package asia.kala.platform;
-
-import java.util.Objects;
+package kala.platform;
 
 /**
  * The supported operating systems.

@@ -1,4 +1,4 @@
-package asia.kala.platform;
+package kala.platform;
 
 public final class Platform {
     private Platform() {

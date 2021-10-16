@@ -1,3 +1,3 @@
-module asia.kala.platform {
-    exports asia.kala.platform;
+module kala.platform {
+    exports kala.platform;
 }

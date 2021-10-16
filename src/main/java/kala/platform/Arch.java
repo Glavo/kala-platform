@@ -1,4 +1,4 @@
-package asia.kala.platform;
+package kala.platform;
 
 /**
  * The supported CPU architectures.
