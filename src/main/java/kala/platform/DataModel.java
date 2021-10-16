@@ -7,8 +7,6 @@ public enum DataModel {
     LP64(16, 32, 64, 64),
     ;
 
-    public static final DataModel CURRENT = detectDM();
-
     final int shortSize;
     final int intSize;
     final int longSize;
@@ -37,6 +35,7 @@ public enum DataModel {
         return longLongSize;
     }
 
+    /*
     private static DataModel detectDM() {
         if (Platform.is64Bit()) {
             if (Platform.isWindows()) {
@@ -46,4 +45,5 @@ public enum DataModel {
         }
         return ILP32;
     }
+     */
 }

@@ -1,9 +1,11 @@
 package kala.platform;
 
+import java.util.Locale;
+
 /**
  * The supported operating systems.
  */
-public enum OS {
+public enum OperatingSystem {
     /**
      * Unknown OS
      */
@@ -80,41 +82,36 @@ public enum OS {
     /**
      * Windows
      */
-    WINDOWS,
-
-    /**
-     * Windows Embedded Compact
-     */
-    WINDOWSCE(WINDOWS),
+    WINDOWS
     ;
 
-    public static final OS CURRENT = detectOS();
+    //public static final OperatingSystem CURRENT_OS = detectOS();
 
-    private final String osName = this.name().toLowerCase();
-    final OS base;
+    private final String normalizedName = this.name().toLowerCase();
+    final OperatingSystem base;
 
-    OS() {
+    OperatingSystem() {
         this(null);
     }
 
-    OS(OS base) {
+    OperatingSystem(OperatingSystem base) {
         this.base = base;
     }
 
-    public String getOSName() {
-        return osName;
+    public String getNormalizedName() {
+        return normalizedName;
     }
 
-    public OS getBaseOS() {
+    public OperatingSystem getBaseOS() {
         return base;
     }
 
-    public boolean is(OS os) {
+    public boolean is(OperatingSystem os) {
         if (os == null) {
             return false;
         }
 
-        OS o = this;
+        OperatingSystem o = this;
         while (o != null) {
             if (o == os) {
                 return true;
@@ -125,88 +122,61 @@ public enum OS {
     }
 
     public boolean isDarwin() {
-        return this == DARWIN;
-    }
-
-    public boolean isMac() {
-        return this == MACOS;
-    }
-
-    public boolean isIOS() {
-        return this == IOS;
-    }
-
-    public boolean isWindows() {
-        return this == WINDOWS || this == WINDOWSCE;
-    }
-
-    public boolean isWindowsCE() {
-        return this == WINDOWSCE;
+        return this == DARWIN || this == MACOS || this == IOS;
     }
 
     public boolean isBSD() {
         return is(BSD);
     }
 
-    public boolean isLinux() {
-        return is(LINUX);
-    }
-
-    public boolean isUnix() {
+    public boolean isUnixLike() {
         return is(UNIX);
     }
 
     @Override
     public String toString() {
-        return getOSName();
+        return getNormalizedName();
     }
 
-    private static OS detectOS() {
-        String osName = System.getProperty("os.name", "").toLowerCase().trim();
-        String jvmName = System.getProperty("java.vm.name", "").toLowerCase().trim();
-
-        if (osName.startsWith("windows ce")) {
-            return WINDOWSCE;
+    public static OperatingSystem parseOperatingSystem(String name) {
+        if (name == null) {
+            return UNKNOWN;
         }
-        if (osName.startsWith("windows")) {
+        name = name.toLowerCase(Locale.ROOT).trim();
+
+        if (name.startsWith("windows")) {
             return WINDOWS;
         }
-        if (osName.startsWith("mac")) {
+        if (name.startsWith("mac")) {
             return MACOS;
         }
-        if (osName.startsWith("darwin")) {
-            if ("robovm".equals(jvmName)) {
-                return IOS;
-            }
+        if (name.startsWith("darwin")) {
             return DARWIN;
         }
 
-        if (osName.startsWith("linux") || osName.equals("gnu")) {
-            if (jvmName.equals("dalvik")) {
-                return ANDROID;
-            }
+        if (name.startsWith("linux") || name.equals("gnu")) {
             return LINUX;
         }
 
-        if (osName.startsWith("aix")) {
+        if (name.startsWith("aix")) {
             return AIX;
         }
-        if (osName.startsWith("solaris") || osName.startsWith("sunos")) {
+        if (name.startsWith("solaris") || name.startsWith("sunos")) {
             return SOLARIS;
         }
-        if (osName.startsWith("freebsd")) {
+        if (name.startsWith("freebsd")) {
             return FREEBSD;
         }
-        if (osName.startsWith("openbsd")) {
+        if (name.startsWith("openbsd")) {
             return OPENBSD;
         }
-        if (osName.startsWith("netbsd")) {
+        if (name.startsWith("netbsd")) {
             return NETBSD;
         }
-        if (osName.startsWith("dragonfly")) {
+        if (name.startsWith("dragonfly")) {
             return DRAGONFLY;
         }
-        if (osName.equals("gnu/kfreebsd")) {
+        if (name.equals("gnu/kfreebsd")) {
             return KFREEBSD;
         }
 

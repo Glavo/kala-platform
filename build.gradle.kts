@@ -32,7 +32,7 @@ tasks.compileJava {
         tree.forEach {
             RandomAccessFile(it, "rw").use { rf ->
                 rf.seek(7)   // major version
-                rf.write(49)   // java 5
+                rf.write(51)   // java 7
                 rf.close()
             }
         }
