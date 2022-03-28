@@ -74,7 +74,7 @@ public enum OperatingSystem {
      */
     WINDOWS;
 
-    private final String normalizedName = this.toString().toLowerCase();
+    private final String normalizedName = this.name().toLowerCase(Locale.ROOT);
 
     public String getNormalizedName() {
         return normalizedName;

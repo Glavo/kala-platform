@@ -100,7 +100,7 @@ public enum Architecture {
     RISCV(true, "RISC-V"),
     ;
 
-    private final String normalizedName = toString().toLowerCase(Locale.ROOT);
+    private final String normalizedName = name().toLowerCase(Locale.ROOT);
     private final String displayName;
     private final boolean is64bit;
 

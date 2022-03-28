@@ -9,11 +9,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
-public final class Platform {
+public class Platform {
     private final OperatingSystem operatingSystem;
     private final Architecture architecture;
 
-    public Platform(OperatingSystem operatingSystem, Architecture architecture) {
+    Platform(OperatingSystem operatingSystem, Architecture architecture) {
         this.architecture = architecture;
         this.operatingSystem = operatingSystem;
     }
@@ -152,9 +152,6 @@ public final class Platform {
         }
     }
 
-    public static final Platform CURRENT_PLATFORM = new Platform(CURRENT_SYSTEM, CURRENT_ARCH);
-    public static final Platform SYSTEM_PLATFORM = (CURRENT_ARCH == SYSTEM_ARCH) ? CURRENT_PLATFORM : new Platform(CURRENT_SYSTEM, SYSTEM_ARCH);
-
     public Architecture getArchitecture() {
         return architecture;
     }
@@ -193,6 +190,24 @@ public final class Platform {
         return getDataModel().getLongLongSize();
     }
 
+    /**
+     * The platform specific standard C library name
+     *
+     * @return The standard C library name
+     */
+    public String getCLibraryName() {
+        if (operatingSystem == OperatingSystem.WINDOWS) {
+            return "msvcrt";
+        }
+        if (operatingSystem == OperatingSystem.AIX) {
+            return architecture.is64Bit() ? "libc.a(shr.o)" : "libc.a(shr_64.o)";
+        }
+        if (operatingSystem.isDarwin()) {
+            return "System";
+        }
+        return "c";
+    }
+
     @Override
     public int hashCode() {
         return architecture.hashCode() ^ operatingSystem.hashCode();
@@ -211,23 +226,8 @@ public final class Platform {
         return architecture.getNormalizedName() + "-" + operatingSystem.getNormalizedName();
     }
 
-    /**
-     * The platform specific standard C library name
-     *
-     * @return The standard C library name
-     */
-    public String getCLibraryName() {
-        if (operatingSystem == OperatingSystem.WINDOWS) {
-            return "msvcrt";
-        }
-        if (operatingSystem == OperatingSystem.AIX) {
-            return architecture.is64Bit() ? "libc.a(shr.o)" : "libc.a(shr_64.o)";
-        }
-        if (operatingSystem.isDarwin()) {
-            return "System";
-        }
-        return "c";
-    }
+    public static final Platform CURRENT_PLATFORM = new Platform(CURRENT_SYSTEM, CURRENT_ARCH);
+    public static final Platform SYSTEM_PLATFORM = (CURRENT_ARCH == SYSTEM_ARCH) ? CURRENT_PLATFORM : new Platform(CURRENT_SYSTEM, SYSTEM_ARCH);
 
     public Path getAppDataDirectory(String folder) {
         if (operatingSystem == OperatingSystem.WINDOWS) {

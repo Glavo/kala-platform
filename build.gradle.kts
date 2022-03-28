@@ -5,8 +5,8 @@ plugins {
     `maven-publish`
 }
 
-group = "org.glavo"
-version = kalaVersion("0.5.0")
+group = "org.glavo.kala"
+version = kalaVersion("0.6.0")
 
 repositories {
     mavenCentral()
