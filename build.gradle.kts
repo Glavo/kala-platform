@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.glavo.kala"
-version = kalaVersion("0.6.0")
+version = "0.6.0"// + "-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -44,7 +44,7 @@ tasks.compileJava {
 
 java {
     withSourcesJar()
-    // withJavadocJar()
+    withJavadocJar()
 }
 
 tasks.withType<GenerateModuleMetadata>().configureEach {
@@ -63,6 +63,9 @@ configure<PublishingExtension> {
             from(components["java"])
 
             pom {
+                name.set(project.name)
+                description.set("Kala Platform")
+                url.set("https://github.com/Glavo/kala-platform")
                 licenses {
                     license {
                         name.set("Apache-2.0")
@@ -77,6 +80,9 @@ configure<PublishingExtension> {
                         email.set("zjx001202@gmail.com")
                     }
                 }
+                scm {
+                    url.set("https://github.com/Glavo/kala-platform")
+                }
             }
         }
     }
@@ -90,12 +96,6 @@ tasks.withType<Javadoc>().configureEach {
         it.addStringOption("Xdoclint:none", "-quiet")
     }
 }
-
-fun kalaVersion(base: String) =
-    if (System.getProperty("kala.release") == "true" || System.getenv("JITPACK") == "true")
-        base
-    else
-        "$base-SNAPSHOT"
 
 fun loadMavenPublishProperties() {
     var secretPropsFile = project.rootProject.file("gradle/maven-central-publish.properties")
@@ -128,6 +128,15 @@ fun loadMavenPublishProperties() {
             rootProject.ext[p] = System.getenv(e)
         }
     }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        rootProject.ext["signing.keyId"].toString(),
+        rootProject.ext["signing.key"].toString(),
+        rootProject.ext["signing.password"].toString(),
+    )
+    sign(publishing.publications["maven"])
 }
 
 nexusPublishing {

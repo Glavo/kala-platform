@@ -98,6 +98,11 @@ public enum Architecture {
      * RISC-V
      */
     RISCV(true, "RISC-V"),
+
+    /**
+     * LoongArch64
+     */
+    LOONG_ARCH64(true, "LoongArch64")
     ;
 
     private final String normalizedName = name().toLowerCase(Locale.ROOT);
@@ -165,6 +170,8 @@ public enum Architecture {
             case "arm64":
             case "aarch64":
                 return AARCH64;
+            case "loongarch64":
+
             case "ppc":
             case "powerpc":
             case "ppc32":
@@ -174,7 +181,7 @@ public enum Architecture {
             case "powerpcle":
             case "ppc32le":
             case "powerpc32le":
-                return PPC;
+                return PPCLE;
             case "ppc64":
             case "powerpc64":
                 return PPC64;
