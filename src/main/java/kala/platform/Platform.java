@@ -1,13 +1,10 @@
 package kala.platform;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 public class Platform {
     private final OperatingSystem operatingSystem;
@@ -126,6 +123,7 @@ public class Platform {
                 }
             }
         } else {
+            /* TODO
             try {
                 Process process = Runtime.getRuntime().exec("/usr/bin/arch");
                 if (process.waitFor(3, TimeUnit.SECONDS)) {
@@ -135,6 +133,7 @@ public class Platform {
                 }
             } catch (Throwable ignored) {
             }
+             */
         }
 
         Architecture sysArch = Architecture.parseArch(sysArchName);
