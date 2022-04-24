@@ -171,7 +171,7 @@ public enum Architecture {
             case "aarch64":
                 return AARCH64;
             case "loongarch64":
-
+                return LOONG_ARCH64;
             case "ppc":
             case "powerpc":
             case "ppc32":
