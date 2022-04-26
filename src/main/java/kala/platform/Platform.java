@@ -222,7 +222,7 @@ public class Platform {
 
     @Override
     public String toString() {
-        return architecture.getNormalizedName() + "-" + operatingSystem.getNormalizedName();
+        return operatingSystem.getNormalizedName() + "-" + architecture.getNormalizedName();
     }
 
     public static final Platform CURRENT_PLATFORM = new Platform(CURRENT_SYSTEM, CURRENT_ARCH);
