@@ -112,7 +112,12 @@ public enum Architecture {
     /**
      * LoongArch64
      */
-    LOONGARCH64(true, "LoongArch64")
+    LOONGARCH64(true, "LoongArch64"),
+
+    /**
+     * LoongArch64 (Old World)
+     */
+    LOONGARCH64_OW(true, "LoongArch64 (Old World)")
     ;
 
     private final String normalizedName = name().toLowerCase(Locale.ROOT);

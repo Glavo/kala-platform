@@ -108,10 +108,13 @@ public class Platform {
             arch = Architecture.PPCLE;
         } else if (arch == Architecture.PPC64 && isLE) {
             arch = Architecture.PPC64LE;
+        } else if (arch == Architecture.LOONGARCH64) {
+            if (CURRENT_SYSTEM_VERSION.startsWith("4.")
+                    || (CURRENT_SYSTEM_VERSION.startsWith("5.") && CURRENT_SYSTEM_VERSION.indexOf('.', 2) == 3))
+                arch =  Architecture.LOONGARCH64_OW;
         }
 
         CURRENT_ARCH = arch;
-
 
         String sysArchName = null;
         if (CURRENT_SYSTEM == OperatingSystem.WINDOWS) {

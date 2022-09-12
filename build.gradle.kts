@@ -5,11 +5,12 @@ plugins {
     `java-library`
     `maven-publish`
     signing
+    id("org.glavo.compile-module-info-plugin") version "2.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
 group = "org.glavo.kala"
-version = "0.9.0"// + "-SNAPSHOT"
+version = "0.10.0" + "-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -24,33 +25,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
 }
 
-tasks.compileJava {
-    modularity.inferModulePath.set(true)
-    options.release.set(9)
-    options.isWarnings = false
-    doLast {
-        val tree = fileTree(destinationDirectory)
-        tree.include("**/*.class")
-        tree.exclude("module-info.class")
-        tree.forEach {
-            RandomAccessFile(it, "rw").use { rf ->
-                rf.seek(7)   // major version
-                rf.write(51)   // java 7
-                rf.close()
-            }
-        }
-    }
-}
-
 java {
     withSourcesJar()
     withJavadocJar()
 }
 
+tasks.compileJava {
+    options.release.set(8)
+}
+
 tasks.withType<GenerateModuleMetadata>().configureEach {
     enabled = false
 }
-
 
 loadMavenPublishProperties()
 
